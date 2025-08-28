@@ -7,8 +7,8 @@ st.title("✂️ Kéo – Búa – Bao 🎮")
 
 # Mapping: tên -> file ảnh
 images = {
-    "kéo": "https://img.icons8.com/emoji/96/scissors.png",
-    "búa": "https://img.icons8.com/emoji/96/hammer.png",
+    "kéo": "https://openmoji.org/data/color/svg/2702.svg",
+    "búa": "https://icons8.com/icon/sp2s7l14mjbJ/hammer",
     "bao": "https://img.icons8.com/emoji/96/roll-of-paper.png"
 }
 choices = list(images.keys())
