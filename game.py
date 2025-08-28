@@ -5,55 +5,58 @@ st.set_page_config(page_title="Kéo Búa Bao", page_icon="✂️")
 
 st.title("✂️ Kéo – Búa – Bao 🎮")
 
-# Mapping: tên -> file ảnh
+# Ảnh online
 images = {
     "kéo": "https://openmoji.org/data/color/svg/2702.svg",
     "búa": "https://cdn-icons-png.flaticon.com/512/2983/2983656.png",
     "bao": "https://img.icons8.com/emoji/96/roll-of-paper.png"
 }
+
 choices = list(images.keys())
 
-# Lưu bảng điểm
-if "win" not in st.session_state:
-    st.session_state.win = 0
-if "lose" not in st.session_state:
-    st.session_state.lose = 0
-if "draw" not in st.session_state:
-    st.session_state.draw = 0
+# CSS animation: nhấp nháy khi hover
+st.markdown("""
+    <style>
+    .choice-img {
+        width: 120px;
+        transition: transform 0.2s;
+    }
+    .choice-img:hover {
+        animation: flash 0.5s infinite alternate;
+        cursor: pointer;
+        transform: scale(1.1);
+    }
+    @keyframes flash {
+        from { opacity: 1; }
+        to { opacity: 0.5; }
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-st.subheader("👉 Bạn chọn:")
-
-# Hiển thị 3 cột, mỗi cột 1 hình
+# Hiển thị ảnh chọn
 cols = st.columns(3)
 player_choice = None
-
 for i, choice in enumerate(choices):
     with cols[i]:
-        st.image(images[choice], width=120)
-        if st.button(choice.capitalize()):
+        if st.button(f"{choice}", key=choice):
             player_choice = choice
+        st.markdown(
+            f'<img src="{images[choice]}" class="choice-img"/>',
+            unsafe_allow_html=True
+        )
 
-# Khi có lựa chọn
+# Xử lý chọn
 if player_choice:
     computer_choice = random.choice(choices)
-
     st.subheader("Kết quả:")
     st.write("🤖 Máy chọn:")
     st.image(images[computer_choice], width=120)
 
     if player_choice == computer_choice:
         st.info("Hòa 🤝")
-        st.session_state.draw += 1
     elif (player_choice == "kéo" and computer_choice == "bao") or \
          (player_choice == "búa" and computer_choice == "kéo") or \
          (player_choice == "bao" and computer_choice == "búa"):
         st.success("Bạn **THẮNG 🎉**")
-        st.session_state.win += 1
     else:
         st.error("Bạn **THUA 😢**")
-        st.session_state.lose += 1
-
-    st.subheader("📊 Bảng điểm")
-    st.write(f"✅ Thắng: {st.session_state.win}")
-    st.write(f"❌ Thua: {st.session_state.lose}")
-    st.write(f"🤝 Hòa: {st.session_state.draw}")
