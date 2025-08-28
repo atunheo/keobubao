@@ -1,31 +1,26 @@
+import streamlit as st
 import random
 
-def game():
-    choices = ["kéo", "búa", "bao"]
-    print("=== Trò chơi Kéo – Búa – Bao ===")
-    print("Nhập: kéo / búa / bao")
+st.set_page_config(page_title="Kéo Búa Bao", page_icon="🎮")
 
-    player = input("Bạn chọn: ").lower().strip()
-    if player not in choices:
-        print("Lựa chọn không hợp lệ!")
-        return
-    
+st.title("✂️ Kéo – Búa – Bao 🎮")
+
+choices = ["kéo", "búa", "bao"]
+
+# Người chơi chọn
+player = st.radio("Chọn của bạn:", choices)
+
+# Nút chơi
+if st.button("Chơi ngay!"):
     computer = random.choice(choices)
-    print(f"Máy chọn: {computer}")
+
+    st.write(f"🤖 Máy chọn: **{computer}**")
 
     if player == computer:
-        print("Kết quả: Hòa 🤝")
+        st.info("Kết quả: **Hòa 🤝**")
     elif (player == "kéo" and computer == "bao") or \
          (player == "búa" and computer == "kéo") or \
          (player == "bao" and computer == "búa"):
-        print("Bạn THẮNG 🎉")
+        st.success("Bạn **THẮNG 🎉**")
     else:
-        print("Bạn THUA 😢")
-
-if __name__ == "__main__":
-    while True:
-        game()
-        again = input("Chơi tiếp? (y/n): ").lower().strip()
-        if again != "y":
-            print("Cảm ơn bạn đã chơi!")
-            break
+        st.error("Bạn **THUA 😢**")
