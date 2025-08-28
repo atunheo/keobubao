@@ -4,6 +4,7 @@ import random, time
 st.set_page_config(page_title="Kéo Búa Bao", page_icon="✂️")
 st.title("✂️ Kéo – Búa – Bao 🎮")
 
+# Hình ảnh
 images = {
     "kéo": "https://openmoji.org/data/color/svg/2702.svg",
     "búa": "https://cdn-icons-png.flaticon.com/512/2983/2983656.png",
@@ -11,25 +12,25 @@ images = {
 }
 choices = list(images.keys())
 
+# Người chơi chọn
 player_choice = st.radio("👉 Bạn chọn:", choices)
-if st.button("Chơi ngay!"):
-    computer_choice = random.choice(choices)
 
+if st.button("Chơi ngay!"):
     st.write("🤖 Máy đang chọn...")
     placeholder = st.empty()
 
-    # Hiệu ứng nháy nháy
-    for i in range(6):  # nháy 6 lần
-        if i % 2 == 0:
-            placeholder.image(images[computer_choice], width=120)
-        else:
-            placeholder.empty()
-        time.sleep(0.2)
+    # Slot machine effect: random hiển thị 10 lần
+    for i in range(10):
+        temp_choice = random.choice(choices)
+        placeholder.image(images[temp_choice], width=120)
+        time.sleep(0.15)
 
-    # Sau khi nháy xong → hiện kết quả
+    # Kết quả chính thức
+    computer_choice = random.choice(choices)
+    placeholder.image(images[computer_choice], width=120)
     st.write(f"🤖 Máy chọn: **{computer_choice}**")
-    st.image(images[computer_choice], width=120)
 
+    # So kết quả
     if player_choice == computer_choice:
         st.info("Kết quả: Hòa 🤝")
     elif (player_choice == "kéo" and computer_choice == "bao") or \
@@ -38,5 +39,3 @@ if st.button("Chơi ngay!"):
         st.success("Bạn **THẮNG 🎉**")
     else:
         st.error("Bạn **THUA 😢**")
-
-
