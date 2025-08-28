@@ -5,9 +5,16 @@ st.set_page_config(page_title="Kéo Búa Bao", page_icon="✂️")
 
 st.title("✂️ Kéo – Búa – Bao 🎮")
 
-choices = ["kéo", "búa", "bao"]
+# Mapping: tên -> file ảnh
+images = {
+    "kéo": "keo.png",
+    "búa": "bua.png",
+    "bao": "bao.png"
+}
 
-# Lưu bảng điểm trong session_state
+choices = list(images.keys())
+
+# Lưu bảng điểm
 if "win" not in st.session_state:
     st.session_state.win = 0
 if "lose" not in st.session_state:
@@ -15,25 +22,39 @@ if "lose" not in st.session_state:
 if "draw" not in st.session_state:
     st.session_state.draw = 0
 
-player = st.radio("👉 Bạn chọn:", choices)
+st.subheader("👉 Bạn chọn:")
 
-if st.button("Chơi ngay!"):
-    computer = random.choice(choices)
-    st.write(f"🤖 Máy chọn: **{computer}**")
+# Hiển thị 3 cột, mỗi cột 1 hình
+cols = st.columns(3)
+player_choice = None
 
-    if player == computer:
-        st.info("Kết quả: **Hòa 🤝**")
+for i, choice in enumerate(choices):
+    with cols[i]:
+        st.image(images[choice], width=120)
+        if st.button(choice.capitalize()):
+            player_choice = choice
+
+# Khi có lựa chọn
+if player_choice:
+    computer_choice = random.choice(choices)
+
+    st.subheader("Kết quả:")
+    st.write("🤖 Máy chọn:")
+    st.image(images[computer_choice], width=120)
+
+    if player_choice == computer_choice:
+        st.info("Hòa 🤝")
         st.session_state.draw += 1
-    elif (player == "kéo" and computer == "bao") or \
-         (player == "búa" and computer == "kéo") or \
-         (player == "bao" and computer == "búa"):
+    elif (player_choice == "kéo" and computer_choice == "bao") or \
+         (player_choice == "búa" and computer_choice == "kéo") or \
+         (player_choice == "bao" and computer_choice == "búa"):
         st.success("Bạn **THẮNG 🎉**")
         st.session_state.win += 1
     else:
         st.error("Bạn **THUA 😢**")
         st.session_state.lose += 1
 
-st.subheader("📊 Bảng điểm")
-st.write(f"✅ Thắng: {st.session_state.win}")
-st.write(f"❌ Thua: {st.session_state.lose}")
-st.write(f"🤝 Hòa: {st.session_state.draw}")
+    st.subheader("📊 Bảng điểm")
+    st.write(f"✅ Thắng: {st.session_state.win}")
+    st.write(f"❌ Thua: {st.session_state.lose}")
+    st.write(f"🤝 Hòa: {st.session_state.draw}")
